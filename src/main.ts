@@ -1,3 +1,4 @@
+import { configDotenv } from 'dotenv';
 import { INestMicroservice } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { TcpOptions, Transport } from '@nestjs/microservices';
@@ -5,6 +6,8 @@ import { TcpOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
+    configDotenv();
+
     const host: string = process.env.HOST;
     const port: number = Number(process.env.PORT);
 
