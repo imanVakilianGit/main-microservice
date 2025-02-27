@@ -1,0 +1,96 @@
+routes strategy:
+    find all movies
+        find one movie
+            redirect: find all scans(for selected movie)
+    find all cinemas
+        redirect: find all scans(for selected cinema)
+        or
+        find all rooms(cinema's rooms)
+            internal component: find all scans(room's scans per each room)
+                find one scans
+
+app structure:
+    customer-gateway(for customer entity) => rest api
+    admin-gateway(for admin entity)
+    main-svc(internal service. all logic will handle here) => graphql
+
+tools and technologies:
+    socket.io
+    microservice
+    graphql
+    typeOrm
+    redis
+    rabbitMq
+
+models:
+    cinema: 
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        name: string
+        slug: string unique
+        address: string
+        openAt: Date
+        closeAt: Date
+        owner: cinemaOwner
+        admins: admin[]
+    room:
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        name: string 
+        slug: string unique(in their cinema)
+        capacity: number
+        scans: scans[]
+    scans:
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        room: room
+        date: Date(without time)
+        time: Date(just time)
+        isClosed: boolean
+        emptySeats: number[]
+        price: number
+    ticket:
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        code: string unique
+        cinema: cinema
+        room: room
+        scans: scans
+        seatNumber: number
+        customer: customer
+        isExpired: boolean
+        qrCodeFilePath: string
+    customer: 
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        firstName: string
+        lastName: string
+        creditCard: creditCard
+        transactions: transaction[]
+    movie:
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        name: string
+        description: string
+    cinemaOwner: 
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        firstName: string
+        lastName: string
+        nationalCode: string unique
+        cinema: cinema
+    admin: 
+        id: primaryKey unique
+        createAt: Date
+        updatedAt: Date
+        firstName: string
+        lastName: string
+        nationalCode: string unique
+        cinema: cinema
