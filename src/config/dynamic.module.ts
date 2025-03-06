@@ -15,8 +15,8 @@ export const dynamicModules = [
                 port: configService.getOrThrow<number>('DATABASE_PORT'),
                 password: configService.getOrThrow<string>('DATABASE_PASSWORD'),
                 username: configService.getOrThrow<string>('DATABASE_USERNAME'),
-                entities: [],
-                migrations: [],
+                entities: [`${process.cwd()}/**/database/type-orm/entity/*.entity.(ts|js)`],
+                migrations: [`${process.cwd()}/**/database/type-orm/migration/*.js`],
                 synchronize: false,
             };
         },
